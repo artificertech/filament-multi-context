@@ -1,0 +1,10 @@
+<?php
+
+namespace {{ namespace }};
+
+use Artificertech\FilamentMultiContext\ContextManager;
+
+class {{ class }} extends ContextManager
+{
+
+}
