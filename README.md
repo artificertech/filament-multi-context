@@ -49,27 +49,10 @@ return [
 
 ## Usage
 
-Publish the package views. The will be published into the `resources/views/vendor/filament` folder. They will override all the default uses of the `Fillament` facade in views but does not change anything else from views of the base package:
-
-```bash
-php artisan vendor:publish --tag="filament-multi-context-views"
-```
-
-changes
-```php
-Filament::getNavigationItems()
-```
-
-to
-```php
-Filament::context(request()->context())->getNavigationItems()
-```
-
-
 create a new filament context using
 
 ```bash
-php artisan make:filament-context Admin"
+php artisan make:filament-context Admin
 ```
 
 The above command will create a `ContextManager` class named `AdminContext` in the `app/Filament/AdminContext` folder (you may change the base folder where contexts are registered in the config file)
@@ -89,7 +72,7 @@ Your context is now created and ready for use. You may configure any context-wid
 
 Now you may generate resources and pages for that context. Lets create your first ContextualPage
 
-# !!! The commands are still a work in progress. For now just create a Page/Resource normally and move it into the appropriate context folder and add the ContextualPage trait to the class
+## !!! The overrides of the default commands are still a work in progress. For now just create a Page/Resource normally and move it into the appropriate context folder and add the ContextualPage trait to the class
 
 
 ```bash
