@@ -36,7 +36,6 @@ class TestCase extends Orchestra
         config()->set('filament-multi-context.contexts', [
             'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\Filament',
             'path' => __DIR__ . '/Filament',
-            'view_path' => resource_path('views/filament'),
             'register' => [],
         ]);
     }

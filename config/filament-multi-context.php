@@ -15,7 +15,6 @@ return [
     'contexts' => [
         'namespace' => 'App\\Filament',
         'path' => app_path('Filament'),
-        'view_path' => resource_path('views/filament'),
         'register' => [
             // your contexts here
         ],

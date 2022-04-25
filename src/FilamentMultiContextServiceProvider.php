@@ -2,6 +2,7 @@
 
 namespace Artificertech\FilamentMultiContext;
 
+use Artificertech\FilamentMultiContext\Commands\MakeContextCommand;
 use Artificertech\FilamentMultiContext\Http\Middleware\ApplyContext;
 use Filament\Commands as FilamentCommands;
 use Filament\Facades\Filament;
@@ -25,6 +26,7 @@ class FilamentMultiContextServiceProvider extends PackageServiceProvider
         $package
             ->name('filament-multi-context')
             ->hasConfigFile()
+            ->hasCommand(MakeContextCommand::class)
             ->hasViews()
             ->hasRoutes(['web']);
     }
