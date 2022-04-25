@@ -60,56 +60,55 @@ abstract class ContextManager extends FilamentManager
     public static function getSlug(): string
     {
         return static::$slug ?? (string) Str::of(class_basename(static::class))
-            ->replace('Context', '')
             ->kebab()
             ->slug();
     }
 
     public static function getPrefix(): string
     {
-        return static::$prefix ?? static::getSlug();
+        return static::$prefix ?? (string) Str::of(static::getSlug())->replace('-context', '');
     }
 
     public static function getResourcesPath(): string
     {
         $reflection = new ReflectionClass(static::class);
 
-        return dirname($reflection->getFileName()) . "/Resources";
+        return dirname($reflection->getFileName()) . '/' . class_basename($reflection->getName()) . "/Resources";
     }
 
     public static function getResourcesNamespace(): string
     {
         $reflection = new ReflectionClass(static::class);
 
-        return $reflection->getNamespaceName() . "\\Resources";
+        return $reflection->getNamespaceName() . '\\' . class_basename($reflection->getName()) . "\\Resources";
     }
 
     public static function getPagesPath(): string
     {
         $reflection = new ReflectionClass(static::class);
 
-        return dirname($reflection->getFileName()) . "/Pages";
+        return dirname($reflection->getFileName()) . '/' . class_basename($reflection->getName()) . "/Pages";
     }
 
     public static function getPagesNamespace(): string
     {
         $reflection = new ReflectionClass(static::class);
 
-        return $reflection->getNamespaceName() . "\\Pages";
+        return $reflection->getNamespaceName() . '\\' . class_basename($reflection->getName()) . "\\Pages";
     }
 
     public static function getWidgetsPath(): string
     {
         $reflection = new ReflectionClass(static::class);
 
-        return dirname($reflection->getFileName()) . "/Widgets";
+        return dirname($reflection->getFileName()) . '/' . class_basename($reflection->getName()) . "/Widgets";
     }
 
     public static function getWidgetsNamespace(): string
     {
         $reflection = new ReflectionClass(static::class);
 
-        return $reflection->getNamespaceName() . "\\Widgets";
+        return $reflection->getNamespaceName() . '\\' . $reflection->getName() . "\\Widgets";
     }
 
     public static function getAuth(): ?Guard

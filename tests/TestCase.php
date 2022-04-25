@@ -4,7 +4,6 @@ namespace Artificertech\FilamentMultiContext\Tests;
 
 use Artificertech\FilamentMultiContext\FilamentMultiContextServiceProvider;
 use Filament\FilamentServiceProvider;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -13,10 +12,6 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Artificertech\\FilamentMultiContext\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
-        );
     }
 
     protected function getPackageProviders($app)
@@ -31,5 +26,18 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+
+        config()->set('filament.pages', [
+            'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\Filament\\Pages',
+            'path' => __DIR__ . '/Filament/Pages',
+            'register' => [],
+        ]);
+
+        config()->set('filament-multi-context.contexts', [
+            'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\Filament',
+            'path' => __DIR__ . '/Filament',
+            'view_path' => resource_path('views/filament'),
+            'register' => [],
+        ]);
     }
 }
