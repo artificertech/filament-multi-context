@@ -59,7 +59,7 @@ class FilamentMultiContextServiceProvider extends PackageServiceProvider
 
         Filament::registerContexts(config('filament-multi-context.contexts.register', []));
 
-        if (!$filesystem->exists(config('filament-multi-context.contexts.path'))) {
+        if (! $filesystem->exists(config('filament-multi-context.contexts.path'))) {
             return;
         }
 
@@ -69,7 +69,7 @@ class FilamentMultiContextServiceProvider extends PackageServiceProvider
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, ContextManager::class) && (!(new ReflectionClass($class))->isAbstract()))
+            ->filter(fn (string $class): bool => is_subclass_of($class, ContextManager::class) && (! (new ReflectionClass($class))->isAbstract()))
             ->toArray());
     }
 }
