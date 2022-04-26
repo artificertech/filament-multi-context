@@ -62,6 +62,15 @@ class FilamentMultiContextManager
         $this->contexts = array_merge($this->contexts, $contexts);
     }
 
+    public function getContext($contextClass = null)
+    {
+        if (is_null($this->context)) {
+            return $this->filament;
+        }
+
+        return $this->getContexts()[$contextClass];
+    }
+
     public function getContexts(): array
     {
         return $this->contexts;
@@ -72,13 +81,13 @@ class FilamentMultiContextManager
         $this->context = $context;
     }
 
-    public function context($returnClass = false): null|string|FilamentManager
+    public function context($returnObject = false): null|string|FilamentManager
     {
         if (is_null($this->context) || !array_key_exists($this->context, $this->contexts)) {
             return $this->filament;
         }
 
-        return $returnClass ? $this->contexts[$this->context] : $this->contextSlugs[$this->context];
+        return $returnObject ? $this->contexts[$this->context] : $this->contextSlugs[$this->context];
     }
 
     protected function discoverResourcesForContext(ContextManager $context)
