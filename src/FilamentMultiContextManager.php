@@ -54,6 +54,9 @@ class FilamentMultiContextManager
             $this->discoverPagesForContext($context);
             $this->discoverWidgetsForContext($context);
 
+            $context->setResourceContexts();
+            $context->setPageContexts();
+
             $this->contextSlugs[$context::class] = $context::getSlug();
 
             return [$context::class => $context];
@@ -98,17 +101,16 @@ class FilamentMultiContextManager
             return;
         }
 
-        $context->registerResources(collect($filesystem->allFiles($context::getResourcesPath()))
+        $resources = collect($filesystem->allFiles($context::getResourcesPath()))
             ->map(function (SplFileInfo $file) use ($context): string {
                 return (string) Str::of($context::getResourcesNamespace())
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
             ->filter(fn (string $class): bool => is_subclass_of($class, Resource::class) && (! (new ReflectionClass($class))->isAbstract()) && in_array(ContextualResource::class, class_uses_recursive($class)))
-            ->each(function (string $resource) use ($context) {
-                $resource::setContext($context::class);
-            })
-            ->toArray());
+            ->toArray();
+
+        $context->registerResources($resources);
     }
 
     protected function discoverPagesForContext(ContextManager $context)
@@ -119,17 +121,16 @@ class FilamentMultiContextManager
             return;
         }
 
-        $context->registerPages(collect($filesystem->allFiles($context::getPagesPath()))
+        $pages = collect($filesystem->allFiles($context::getPagesPath()))
             ->map(function (SplFileInfo $file) use ($context): string {
                 return (string) Str::of($context::getPagesNamespace())
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
             ->filter(fn (string $class): bool => is_subclass_of($class, Page::class) && (! (new ReflectionClass($class))->isAbstract()) && in_array(ContextualPage::class, class_uses_recursive($class)))
-            ->each(function (string $page) use ($context) {
-                $page::setContext($context::class);
-            })
-            ->toArray());
+            ->toArray();
+
+        $context->registerPages($pages);
     }
 
     protected function discoverWidgetsForContext(ContextManager $context)
