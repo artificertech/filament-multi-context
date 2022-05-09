@@ -37,7 +37,7 @@ class FilamentMultiContextManager
 
     public function registerContexts($contexts): void
     {
-        if (! is_array($contexts)) {
+        if (!is_array($contexts)) {
             $contexts = [$contexts];
         }
 
@@ -46,13 +46,16 @@ class FilamentMultiContextManager
                 $context = new $context();
             }
 
-            if (! is_a($context, ContextManager::class)) {
+            if (!is_a($context, ContextManager::class)) {
                 throw new Exception('Global search provider ' . $context::class . ' is not an instance of ' . ContextManager::class);
             }
 
             $this->discoverResourcesForContext($context);
             $this->discoverPagesForContext($context);
             $this->discoverWidgetsForContext($context);
+
+            $context->setResourceContexts();
+            $context->setPageContexts();
 
             $this->contextSlugs[$context::class] = $context::getSlug();
 
@@ -83,7 +86,7 @@ class FilamentMultiContextManager
 
     public function context($returnObject = false): null|string|FilamentManager
     {
-        if (is_null($this->context) || ! array_key_exists($this->context, $this->contexts)) {
+        if (is_null($this->context) || !array_key_exists($this->context, $this->contexts)) {
             return $this->filament;
         }
 
@@ -94,49 +97,47 @@ class FilamentMultiContextManager
     {
         $filesystem = app(Filesystem::class);
 
-        if (! $filesystem->exists($context::getResourcesPath())) {
+        if (!$filesystem->exists($context::getResourcesPath())) {
             return;
         }
 
-        $context->registerResources(collect($filesystem->allFiles($context::getResourcesPath()))
+        $resources = collect($filesystem->allFiles($context::getResourcesPath()))
             ->map(function (SplFileInfo $file) use ($context): string {
                 return (string) Str::of($context::getResourcesNamespace())
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, Resource::class) && (! (new ReflectionClass($class))->isAbstract()) && in_array(ContextualResource::class, class_uses_recursive($class)))
-            ->each(function (string $resource) use ($context) {
-                $resource::setContext($context::class);
-            })
-            ->toArray());
+            ->filter(fn (string $class): bool => is_subclass_of($class, Resource::class) && (!(new ReflectionClass($class))->isAbstract()) && in_array(ContextualResource::class, class_uses_recursive($class)))
+            ->toArray();
+
+        $context->registerResources($resources);
     }
 
     protected function discoverPagesForContext(ContextManager $context)
     {
         $filesystem = app(Filesystem::class);
 
-        if (! $filesystem->exists($context::getPagesPath())) {
+        if (!$filesystem->exists($context::getPagesPath())) {
             return;
         }
 
-        $context->registerPages(collect($filesystem->allFiles($context::getPagesPath()))
+        $pages = collect($filesystem->allFiles($context::getPagesPath()))
             ->map(function (SplFileInfo $file) use ($context): string {
                 return (string) Str::of($context::getPagesNamespace())
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, Page::class) && (! (new ReflectionClass($class))->isAbstract()) && in_array(ContextualPage::class, class_uses_recursive($class)))
-            ->each(function (string $page) use ($context) {
-                $page::setContext($context::class);
-            })
-            ->toArray());
+            ->filter(fn (string $class): bool => is_subclass_of($class, Page::class) && (!(new ReflectionClass($class))->isAbstract()) && in_array(ContextualPage::class, class_uses_recursive($class)))
+            ->toArray();
+
+        $context->registerPages($pages);
     }
 
     protected function discoverWidgetsForContext(ContextManager $context)
     {
         $filesystem = app(Filesystem::class);
 
-        if (! $filesystem->exists($context::getWidgetsPath())) {
+        if (!$filesystem->exists($context::getWidgetsPath())) {
             return;
         }
 
@@ -146,7 +147,7 @@ class FilamentMultiContextManager
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, Widget::class) && (! (new ReflectionClass($class))->isAbstract()))
+            ->filter(fn (string $class): bool => is_subclass_of($class, Widget::class) && (!(new ReflectionClass($class))->isAbstract()))
             ->toArray());
     }
 
