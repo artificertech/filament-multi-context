@@ -37,7 +37,7 @@ class FilamentMultiContextManager
 
     public function registerContexts($contexts): void
     {
-        if (!is_array($contexts)) {
+        if (! is_array($contexts)) {
             $contexts = [$contexts];
         }
 
@@ -46,7 +46,7 @@ class FilamentMultiContextManager
                 $context = new $context();
             }
 
-            if (!is_a($context, ContextManager::class)) {
+            if (! is_a($context, ContextManager::class)) {
                 throw new Exception('Global search provider ' . $context::class . ' is not an instance of ' . ContextManager::class);
             }
 
@@ -86,7 +86,7 @@ class FilamentMultiContextManager
 
     public function context($returnObject = false): null|string|FilamentManager
     {
-        if (is_null($this->context) || !array_key_exists($this->context, $this->contexts)) {
+        if (is_null($this->context) || ! array_key_exists($this->context, $this->contexts)) {
             return $this->filament;
         }
 
@@ -97,7 +97,7 @@ class FilamentMultiContextManager
     {
         $filesystem = app(Filesystem::class);
 
-        if (!$filesystem->exists($context::getResourcesPath())) {
+        if (! $filesystem->exists($context::getResourcesPath())) {
             return;
         }
 
@@ -107,7 +107,7 @@ class FilamentMultiContextManager
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, Resource::class) && (!(new ReflectionClass($class))->isAbstract()) && in_array(ContextualResource::class, class_uses_recursive($class)))
+            ->filter(fn (string $class): bool => is_subclass_of($class, Resource::class) && (! (new ReflectionClass($class))->isAbstract()) && in_array(ContextualResource::class, class_uses_recursive($class)))
             ->toArray();
 
         $context->registerResources($resources);
@@ -117,7 +117,7 @@ class FilamentMultiContextManager
     {
         $filesystem = app(Filesystem::class);
 
-        if (!$filesystem->exists($context::getPagesPath())) {
+        if (! $filesystem->exists($context::getPagesPath())) {
             return;
         }
 
@@ -127,7 +127,7 @@ class FilamentMultiContextManager
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, Page::class) && (!(new ReflectionClass($class))->isAbstract()) && in_array(ContextualPage::class, class_uses_recursive($class)))
+            ->filter(fn (string $class): bool => is_subclass_of($class, Page::class) && (! (new ReflectionClass($class))->isAbstract()) && in_array(ContextualPage::class, class_uses_recursive($class)))
             ->toArray();
 
         $context->registerPages($pages);
@@ -137,7 +137,7 @@ class FilamentMultiContextManager
     {
         $filesystem = app(Filesystem::class);
 
-        if (!$filesystem->exists($context::getWidgetsPath())) {
+        if (! $filesystem->exists($context::getWidgetsPath())) {
             return;
         }
 
@@ -147,7 +147,7 @@ class FilamentMultiContextManager
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             })
-            ->filter(fn (string $class): bool => is_subclass_of($class, Widget::class) && (!(new ReflectionClass($class))->isAbstract()))
+            ->filter(fn (string $class): bool => is_subclass_of($class, Widget::class) && (! (new ReflectionClass($class))->isAbstract()))
             ->toArray());
     }
 

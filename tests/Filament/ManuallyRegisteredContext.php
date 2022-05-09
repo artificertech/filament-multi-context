@@ -8,6 +8,6 @@ use Artificertech\FilamentMultiContext\Tests\Filament\ManuallyRegisteredContext\
 class ManuallyRegisteredContext extends ContextManager
 {
     protected array $pages = [
-        ManuallyRegisteredPage::class
+        ManuallyRegisteredPage::class,
     ];
 }
