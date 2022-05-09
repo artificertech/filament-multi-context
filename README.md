@@ -52,7 +52,7 @@ return [
 create a new filament context using
 
 ```bash
-php artisan make:filament-context Admin
+php artisan make:filament-context AdminContext
 ```
 
 The above command will create a `ContextManager` class named `AdminContext` in the `app/Filament/AdminContext` folder (you may change the base folder where contexts are registered in the config file)
