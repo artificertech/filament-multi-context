@@ -166,8 +166,8 @@ abstract class ContextManager extends FilamentManager
 
     public function setResourceContexts()
     {
-        foreach ($this->pages as $pageClass) {
-            $pageClass::setContext(static::class);
+        foreach ($this->resources as $resourceClass) {
+            $resourceClass::setContext(static::class);
         }
     }
 
