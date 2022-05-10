@@ -8,7 +8,6 @@ use Filament\FilamentManager;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -167,8 +166,6 @@ abstract class ContextManager extends FilamentManager
 
     public function setResourceContexts()
     {
-        Log::debug($this->pages);
-
         foreach ($this->pages as $pageClass) {
             $pageClass::setContext(static::class);
         }
