@@ -5,7 +5,8 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/artificertech/filament-multi-context/Check%20&%20fix%20styling?label=code%20style)](https://github.com/artificertech/filament-multi-context/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/artificertech/filament-multi-context.svg?style=flat-square)](https://packagist.org/packages/artificertech/filament-multi-context)
 
-This package allows you to register multiple filament contexts in your application with their own set of resources and pages
+This package allows you to register multiple filament contexts in your
+application with their own set of resources and pages
 
 ## Installation
 
@@ -44,7 +45,6 @@ return [
         ],
     ],
 ];
-
 ```
 
 ## Usage
@@ -55,7 +55,9 @@ create a new filament context using
 php artisan make:filament-context AdminContext
 ```
 
-The above command will create a `ContextManager` class named `AdminContext` in the `app/Filament/AdminContext` folder (you may change the base folder where contexts are registered in the config file)
+The above command will create a `ContextManager` class named `AdminContext` in
+the `app/Filament/AdminContext` folder (you may change the base folder where
+contexts are registered in the config file)
 
 ```php
 namespace App\Filament\AdminContext;
@@ -68,12 +70,24 @@ class AdminContext extends ContextManager
 }
 ```
 
-Your context is now created and ready for use. You may configure any context-wide settings in that file (see [Configuring a Context](#configuring-a-context)). A directory for your contextual Pages, Resources, and Widgets that has the same name as your ContextManager class will also be created.
+Your context is now created and ready for use. You may configure any
+context-wide settings in that file (see
+[Configuring a Context](#configuring-a-context)). A directories for your
+contextual Pages, Resources, and Widgets will also be created.
+
+I.e. if you run `php artisan make:filament-context AdminContext` you will see
+the following files and directories in your application:
+
+```
+app/Filament/AdminContext.php
+app/Filament/AdminContext/
+app/Filament/AdminContext/Pages
+app/Filament/AdminContext/Resources
+```
 
 <!-- Now you may generate resources and pages for that context. Lets create your first ContextualPage
 
 ## !!! The overrides of the default commands are still a work in progress. For now just create a Page/Resource normally and move it into the appropriate context folder and add the ContextualPage trait to the class
-
 
 ```bash
 php artisan make:filament-page --context=Admin Dashboard"
@@ -101,11 +115,19 @@ Your page is will now be registered in the AdminContext at localhost/admin/dashb
 
 ## Adding Pages, Resources, and Widgets to your context
 
-You may generate pages, resources, and widgets the same way you do with normal filament. Then move the resources into the context folder that was generated along with your ContextManager class. 
+You may generate pages, resources, and widgets the same way you do with normal
+filament. Then move the files into the appropriate context folder that was
+generated along with your ContextManager class.
 
 Note that this folder must match the class name of your ContextManager class.
 
-Once you have made your page and moved it into the {Context}/Pages folder make sure to change the namespace and add the `Artificertech\FilamentMultiContext\Concerns\ContextualPage` trait (`Artificertech\FilamentMultiContext\Concerns\ContextualResource` for resources) and example page is provided:
+Once you have made your page and moved it into the {Context}/Pages folder make
+sure to change the namespace and add the
+`Artificertech\FilamentMultiContext\Concerns\ContextualPage` trait
+(`Artificertech\FilamentMultiContext\Concerns\ContextualResource` for resources)
+an example page is provided:
+
+(a command helper to acomplish this is on the roadmap)
 
 ```php
 namespace App\Filament\AdminContext\Pages;
@@ -123,36 +145,53 @@ class Dashboard extends Page
 }
 ```
 
+Your page should now be available at
+`http://example.com/{base filament path}/admin/dashboard`
+
 ### Widgets
 
-Widgets that are registered in a context will be available when calling `Filament::getWidgets()`. This means that if you create a page in your context that extends the `Filament\Pages\Dashboard` class it will have a set of widgets available specific to the context.
-
-### --c|context Flag for make:filament- commands
-
-(coming soon)
-
+Widgets that are registered in a context will be available when calling
+`Filament::getWidgets()`. This means that if you create a page in your context
+that extends the `Filament\Pages\Dashboard` class it will have a set of widgets
+available specific to the context.
 
 ## Page/Resource context helper
 
-If you are working with static methods for a Filament Page or Resource and need to access the context of that Page you should utilize the `static::getContext()` method. This will return the class name of the context for that Page or Resource.
+If you are working with static methods for a Filament Page or Resource and need
+to access the context of that Page you should utilize the `static::getContext()`
+method. This will return the class name of the context for that Page or
+Resource.
 
 ## The Filament::context() helper
 
-If you are working with contexts in other parts of your filament application and want to know what the current context is using you may use the `Filament::context()` helper method. This will return the slug of the current context. If you pass true `Filament::context(true)` you will get the ContextManager object. This helper returns null if there is no active context or the default FilamentManager object if you passed true as a parameter.
+If you are working with contexts in other parts of your filament application and
+want to know what the current context is using you may use the
+`Filament::context()` helper method. This will return the slug of the current
+context. If you pass true `Filament::context(true)` you will get the
+ContextManager object. This helper returns null if there is no active context or
+the default FilamentManager object if you passed true as a parameter.
 
 ### !!!Context helper availability
 
-This value is set  as part of the route middleware for the Filament Page or Resource Page and is included in the livewire persistent middleware
+This value is set as part of the route middleware for the Filament Page or
+Resource Page and is included in the livewire persistent middleware
 
-This ensures that this helper method is available for use at during the inital request to the page and is available on all subsequent livewire requests
+This ensures that this helper method is available for use at during the inital
+request to the page and is available on all subsequent livewire requests
 
-You should not depend on this helper in other parts of your application outside of filament
+You should not depend on this helper in other parts of your application outside
+of filament
 
 ## Configuring a Context
 
-A `ContextManager` class allows you to configure your context just like you would inside the `filament.php` config file except you override static properties and methods in the class instead of in a config file in your application.
+A `ContextManager` class allows you to configure your context just like you
+would inside the `filament.php` config file except you override static
+properties and methods in the class instead of in a config file in your
+application.
 
-Every option listed defaults to what is in the `filament.php` config file unless set. The only exceptions are the registration of pages, resources, and widgets and context-specific options such as the slug and route prefix.
+Every option listed defaults to what is in the `filament.php` config file unless
+set. The only exceptions are the registration of pages, resources, and widgets
+and context-specific options such as the slug and route prefix.
 
 Here is an example of a context manager that has been fully configured
 
@@ -204,11 +243,17 @@ class AdminContext extends ContextManager
 
 ### Filament Facade and FilamentServing event
 
-Calls to the Filament facade are passed to the appropriate ContextManager object after the ApplyContext middlware is applied. If you wish to have configurations such as `Filament::registerTheme()` apply to all contexts make sure to call them within `Filament::serving(function() { })` callback. This event is called after the ApplyContext middlware has already run.
+Calls to the Filament facade are passed to the appropriate ContextManager object
+after the ApplyContext middlware is applied. If you wish to have configurations
+such as `Filament::registerTheme()` apply to all contexts make sure to call them
+within `Filament::serving(function() { })` callback. This event is called after
+the ApplyContext middlware has already run.
 
-If you want to apply changes to only specific contexts you can call `Filament::getContext(AdminContext ::class)->registerTheme()`
+If you want to apply changes to only specific contexts you can call
+`Filament::getContext(AdminContext ::class)->registerTheme()`
 
-If you dont pass a parameter to getContext() it will return the default FilamentManager object
+If you dont pass a parameter to getContext() it will return the default
+FilamentManager object
 
 ## Testing
 
@@ -218,15 +263,19 @@ composer test
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed
+recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/spatie/.github/blob/main/CONTRIBUTING.md) for details.
+Please see
+[CONTRIBUTING](https://github.com/spatie/.github/blob/main/CONTRIBUTING.md) for
+details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please review [our security policy](../../security/policy) on how to report
+security vulnerabilities.
 
 ## Credits
 
@@ -235,4 +284,5 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more
+information.

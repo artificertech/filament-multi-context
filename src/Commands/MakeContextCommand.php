@@ -37,7 +37,7 @@ class MakeContextCommand extends Command
         $path = (string) Str::of($directoryPath)
             ->append('.php');
 
-        if (! $this->option('force') && $this->checkForCollision([
+        if (!$this->option('force') && $this->checkForCollision([
             $path,
         ])) {
             return static::INVALID;
@@ -49,6 +49,9 @@ class MakeContextCommand extends Command
         ]);
 
         app(Filesystem::class)->makeDirectory($directoryPath);
+        app(Filesystem::class)->makeDirectory($directoryPath . '/Pages');
+        app(Filesystem::class)->makeDirectory($directoryPath . '/Resources');
+        app(Filesystem::class)->makeDirectory($directoryPath . '/Widgets');
 
         $this->info("Successfully created {$context}!");
 
@@ -59,7 +62,7 @@ class MakeContextCommand extends Command
     {
         $filesystem = app(Filesystem::class);
 
-        if (! $this->fileExists($stubPath = base_path("stubs/filament/{$stub}.stub"))) {
+        if (!$this->fileExists($stubPath = base_path("stubs/filament/{$stub}.stub"))) {
             $stubPath = __DIR__ . "/../../stubs/{$stub}.stub";
         }
 
