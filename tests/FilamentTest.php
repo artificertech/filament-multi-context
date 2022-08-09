@@ -1,0 +1,35 @@
+<?php
+
+use Artificertech\FilamentMultiContext\Tests\App\Filament\Pages\Dashboard;
+use Artificertech\FilamentMultiContext\Tests\App\Filament\Resources\UserResource;
+use Artificertech\FilamentMultiContext\Tests\App\Models\User;
+use Filament\Facades\Filament;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+
+it('registers filament pages', function () {
+    expect(Filament::getPages())->toContain(Dashboard::class);
+
+    Filament::forContext('filament', function () {
+        expect(Filament::getPages())->toContain(Dashboard::class);
+    });
+
+    actingAs(User::factory()->create());
+
+    get(route('filament.pages.dashboard'))
+        ->assertSuccessful();
+});
+
+it('registers filament resources', function () {
+    expect(Filament::getResources())->toContain(UserResource::class);
+
+    Filament::forContext('filament', function () {
+        expect(Filament::getResources())->toContain(UserResource::class);
+    });
+
+    actingAs(User::factory()->create());
+
+    get(route('filament.resources.users.index'))
+        ->assertSuccessful();
+});

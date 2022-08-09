@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Providers;
+
+use Artificertech\FilamentMultiContext\ContextServiceProvider;
+
+class {{ class }} extends ContextServiceProvider
+{
+    public static string $name = '{{ name }}';
+}
