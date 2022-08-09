@@ -48,15 +48,15 @@ class TestCase extends Orchestra
      */
     protected function defineDatabaseMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
 
     public function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');
 
-        $app['config']->set('filament', require __DIR__ . '/config/filament.php');
+        $app['config']->set('filament', require __DIR__.'/config/filament.php');
 
-        $app['config']->set('filament-teams', require __DIR__ . '/config/filament-teams.php');
+        $app['config']->set('filament-teams', require __DIR__.'/config/filament-teams.php');
     }
 }
