@@ -16,7 +16,7 @@ class ApplyContext
      */
     public function handle($request, Closure $next, $context)
     {
-        Filament::setCurrentContext($context);
+        Filament::setContext($context);
 
         return $next($request);
     }

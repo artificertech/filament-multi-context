@@ -16,244 +16,147 @@ You can install the package via composer:
 composer require artificertech/filament-multi-context
 ```
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-multi-context-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Contexts
-    |--------------------------------------------------------------------------
-    |
-    | This is the namespace and directory that Filament will automatically
-    | register contexts from. You may also register contexts here.
-    |
-    */
-
-    'contexts' => [
-        'namespace' => 'App\\Filament',
-        'path' => app_path('Filament'),
-        'register' => [
-            // your contexts here
-        ],
-    ],
-];
-```
-
 ## Usage
 
 create a new filament context using
 
 ```bash
-php artisan make:filament-context AdminContext
+php artisan make:filament-context FilamentTeams
 ```
 
-The above command will create a `ContextManager` class named `AdminContext` in
-the `app/Filament/AdminContext` folder (you may change the base folder where
-contexts are registered in the config file)
+The above command will create the following files and directories:
+
+```
+app/FilamentTeams/Pages/
+app/FilamentTeams/Resources/
+app/FilamentTeams/Widgets/
+app/Providers/FilamentTeamsServiceProvider.php
+config/filament-teams.php
+```
+
+`Filament` cannot be passed as a context to this command as it is reserved for
+the default filament installation
+
+> **_Register Provider:_** Be sure to add the `FilamentTeamsServiceProvider`
+> class to your providers array in `config/app.php`
+
+You may now add filament resources in your FilamentTeams directories and they
+will be registered under the `filament-teams` context
+
+## Configuration
+
+The `config/filament-teams.php` file contains a subset of the
+`config/filament.php` configuration file. The values in the `filament-teams.php`
+file can be adjusted and will only affect the pages, resources, and widgets for
+the `filament-teams` context.
+
+Currently the configuration values that can be modified for a specific context
+are:
+
+```
+'path'
+'domain'
+'pages'
+'resources'
+'widgets'
+'livewire'
+'middleware'
+```
+
+### ContextServiceProvider
+
+Your `ContextServiceProvider` found in your
+`app/Providers/FilamentTeamsServiceProvider.php` is an extension of the Filament
+`PluginServiceProvder` so features of the `PluginServiceProvider` may be used
+for your context
+
+### Custom Page and Resource Routing
+
+If you would like more control over the way pages and resources are routed you
+may override the `componentRoutes()` function in your
+`FilamentTeamsServiceProvider`
 
 ```php
-namespace App\Filament\AdminContext;
+protected function componentRoutes(): callable
+    {
+        return function () {
+            Route::name('pages.')->group(function (): void {
+                foreach (Facades\Filament::getPages() as $page) {
+                    Route::group([], $page::getRoutes());
+                }
+            });
 
-use Artificertech\FilamentMultiContext\ContextManager;
-
-class AdminContext extends ContextManager
-{
-
-}
+            Route::name('resources.')->group(function (): void {
+                foreach (Facades\Filament::getResources() as $resource) {
+                    Route::group([], $resource::getRoutes());
+                }
+            });
+        };
+    }
 ```
 
-Your context is now created and ready for use. You may configure any
-context-wide settings in that file (see
-[Configuring a Context](#configuring-a-context)). A directories for your
-contextual Pages, Resources, and Widgets will also be created.
+## !!! The Filament Facade
 
-I.e. if you run `php artisan make:filament-context AdminContext` you will see
-the following files and directories in your application:
+In order for this package to work the `filament` app service has been overriden.
+Each context is represented by its own `Filament\FilamentManager` object. Within
+your application calls to the filament facade (such as `Filament::serving`) will
+be proxied to the appropriate `Filament\FilamentManager` object based on the
+current context of your application (which is determined by the route of the
+request)
 
-```
-app/Filament/AdminContext.php
-app/Filament/AdminContext/
-app/Filament/AdminContext/Pages
-app/Filament/AdminContext/Resources
-```
+### Context Functions
 
-<!-- Now you may generate resources and pages for that context. Lets create your first ContextualPage
-
-## !!! The overrides of the default commands are still a work in progress. For now just create a Page/Resource normally and move it into the appropriate context folder and add the ContextualPage trait to the class
-
-```bash
-php artisan make:filament-page --context=Admin Dashboard"
-```
-
-This command will create a `Dashboard` class in the `app/Filament/AdminContext/Pages` folder
+The following functions have been added to facilitate multiple
+`Filament\FilamentManger` objects in your application:
 
 ```php
-namespace App\Filament\AdminContext\Pages;
+// retrieve the string name of the current application context
+// defaults to `filament`
 
-use Artificertech\FilamentMultiContext\Concerns\ContextualPage;
-use Filament\Pages\Page;
-
-class Dashboard extends Page
-{
-    use ContextualPage;
-
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
-    protected static string $view = 'filament.admin-context.pages.dashboard';
-}
+Filament::currentContext(): string
 ```
-
-Your page is will now be registered in the AdminContext at localhost/admin/dashboard if you navigate to that page you wont see any other Filament navigation items listed in the sidebar. -->
-
-## Adding Pages, Resources, and Widgets to your context
-
-You may generate pages, resources, and widgets the same way you do with normal
-filament. Then move the files into the appropriate context folder that was
-generated along with your ContextManager class.
-
-Note that this folder must match the class name of your ContextManager class.
-
-Once you have made your page and moved it into the {Context}/Pages folder make
-sure to change the namespace and add the
-`Artificertech\FilamentMultiContext\Concerns\ContextualPage` trait
-(`Artificertech\FilamentMultiContext\Concerns\ContextualResource` for resources)
-an example page is provided:
-
-(a command helper to acomplish this is on the roadmap)
 
 ```php
-namespace App\Filament\AdminContext\Pages;
+// retrieve the Filament\FilamentManager object for the current app context
 
-use Artificertech\FilamentMultiContext\Concerns\ContextualPage;
-use Filament\Pages\Page;
-
-class Dashboard extends Page
-{
-    use ContextualPage;
-
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
-    protected static string $view = 'filament.admin-context.pages.dashboard';
-}
+Filament::getContext()
 ```
-
-Your page should now be available at
-`http://example.com/{base filament path}/admin/dashboard`
-
-### Widgets
-
-Widgets that are registered in a context will be available when calling
-`Filament::getWidgets()`. This means that if you create a page in your context
-that extends the `Filament\Pages\Dashboard` class it will have a set of widgets
-available specific to the context.
-
-## Page/Resource context helper
-
-If you are working with static methods for a Filament Page or Resource and need
-to access the context of that Page you should utilize the `static::getContext()`
-method. This will return the class name of the context for that Page or
-Resource.
-
-## The Filament::context() helper
-
-If you are working with contexts in other parts of your filament application and
-want to know what the current context is using you may use the
-`Filament::context()` helper method. This will return the slug of the current
-context. If you pass true `Filament::context(true)` you will get the
-ContextManager object. This helper returns null if there is no active context or
-the default FilamentManager object if you passed true as a parameter.
-
-### !!!Context helper availability
-
-This value is set as part of the route middleware for the Filament Page or
-Resource Page and is included in the livewire persistent middleware
-
-This ensures that this helper method is available for use at during the inital
-request to the page and is available on all subsequent livewire requests
-
-You should not depend on this helper in other parts of your application outside
-of filament
-
-## Configuring a Context
-
-A `ContextManager` class allows you to configure your context just like you
-would inside the `filament.php` config file except you override static
-properties and methods in the class instead of in a config file in your
-application.
-
-Every option listed defaults to what is in the `filament.php` config file unless
-set. The only exceptions are the registration of pages, resources, and widgets
-and context-specific options such as the slug and route prefix.
-
-Here is an example of a context manager that has been fully configured
 
 ```php
-namespace App\Filament\AdminContext;
+// retrieve the array of Filament\FilamentManager objects keyed by the context name
 
-use Artificertech\FilamentMultiContext\ContextManager;
-
-class AdminContext extends ContextManager
-{
-    // override filament config
-    protected static ?string $domain = 'admin.example.com';
-
-    protected static ?array $baseMiddleware = [
-        MyMiddleware::class
-    ];
-
-    protected static ?array $authMiddleware = [
-        MyAuthMiddlware::class
-    ];
-
-    protected static ?string $path = 'admin';
-
-    protected static ?string $auth = 'custom-guard';
-
-    protected static ?string $defaultAvatarProvider = MyAvatarProvider::class;
-
-
-    // Additional Options
-
-    // the slug used in route names and in the Filament::context() helper (defaults to the class name in kebab case)
-    protected static ?string $slug = 'admin-context';
-
-    // The route prefix for all routes in this context (defaults to the slug without -context at the end)
-    protected static ?string $prefix = null;
-
-    // add context-specifc middlware without overriding the default filament configuration
-    protected static string | array $middlewares = [];
-
-
-    // Manually Register items
-    protected array $pages = [];
-
-    protected array $resources = [];
-
-    protected array $widgets = [];
-}
+Filament::getContexts()
 ```
 
-### Filament Facade and FilamentServing event
+```php
+// set the current app context. 
+// Passing null or nothing sets the context to 'filament'
 
-Calls to the Filament facade are passed to the appropriate ContextManager object
-after the ApplyContext middlware is applied. If you wish to have configurations
-such as `Filament::registerTheme()` apply to all contexts make sure to call them
-within `Filament::serving(function() { })` callback. This event is called after
-the ApplyContext middlware has already run.
+Filament::setContext(string|null $context)
+```
 
-If you want to apply changes to only specific contexts you can call
-`Filament::getContext(AdminContext ::class)->registerTheme()`
+```php
+// sets the context for the duration of the callback function, then resets it back to the original value
+Filament::forContext(string $context, function () {
+    // ...
+})
+```
 
-If you dont pass a parameter to getContext() it will return the default
-FilamentManager object
+```php
+// loops through each registered context (including the default 'filament' context), 
+// sets that context as the current context, 
+// runs the callback, then resets to the original value
+Filament::forAllContexts(function () {
+    // ...
+})
+```
+
+```php
+// creates a new FilamentManager object and registers it under the $name context
+// this method is used by your ContextServiceProvider to register your context
+// you shouldn't need to use this method during normal development
+Filament::addContext(string $name)
+```
 
 ## Testing
 

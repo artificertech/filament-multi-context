@@ -12,50 +12,88 @@ class MakeContextCommand extends Command
     use Concerns\CanManipulateFiles;
     use Concerns\CanValidateInput;
 
-    protected $description = 'Creates a Filament Context class';
+    protected $description = 'Create a Filament Context';
 
     protected $signature = 'make:filament-context {name?} {--F|force}';
 
     public function handle(): int
     {
-        $context = (string) Str::of($this->argument('name') ?? $this->askRequired('Name (e.g. `AdminContext`)', 'name'))
+        $context = Str::of($this->getContextInput())
             ->trim('/')
             ->trim('\\')
             ->trim(' ')
             ->replace('/', '\\');
-        $contextClass = (string) Str::of($context)->afterLast('\\');
-        $contextNamespace = Str::of($context)->contains('\\') ?
-            (string) Str::of($context)->beforeLast('\\') :
-            '';
 
-        $directoryPath = app_path(
-            (string) Str::of($context)
-                ->prepend('Filament\\')
-                ->replace('\\', '/')
+        $this->copyStubs($context);
+
+        $this->createDirectories($context);
+
+        $this->info("Successfully created {$context} context!");
+
+        return static::SUCCESS;
+    }
+
+    public function getContextInput(): string
+    {
+        return $this->validateInput(
+            fn () => $this->argument('name') ?? $this->askRequired('Name (e.g. `FilamentTeams`)', 'name'),
+            'name',
+            ['required', 'not_in:filament']
         );
+    }
 
-        $path = (string) Str::of($directoryPath)
+    protected function copyStubs($context)
+    {
+        $serviceProviderClass = $context->afterLast('\\')->append('ServiceProvider');
+
+        $contextName = $context->afterLast('\\')->kebab();
+
+        $serviceProviderPath = $serviceProviderClass
+            ->prepend('/')
+            ->prepend(app_path('Providers'))
             ->append('.php');
 
+        $configPath = config_path($contextName->append('.php'));
+
+        $contextNamespace = $context
+            ->replace('\\', '\\\\')
+            ->prepend('\\\\')
+            ->prepend('App');
+
         if (! $this->option('force') && $this->checkForCollision([
-            $path,
+            $serviceProviderPath,
         ])) {
             return static::INVALID;
         }
 
-        $this->copyStubToApp('Context', $path, [
-            'class' => $contextClass,
-            'namespace' => 'App\\Filament' . ($contextNamespace !== '' ? "\\{$contextNamespace}" : ''),
+        if (! $this->option('force') && $this->checkForCollision([
+            $configPath,
+        ])) {
+            return static::INVALID;
+        }
+
+        $this->copyStubToApp('ContextServiceProvider', $serviceProviderPath, [
+            'class' => (string) $serviceProviderClass,
+            'name' => (string) $contextName,
         ]);
 
-        app(Filesystem::class)->makeDirectory($directoryPath);
-        app(Filesystem::class)->makeDirectory($directoryPath . '/Pages');
-        app(Filesystem::class)->makeDirectory($directoryPath . '/Resources');
-        app(Filesystem::class)->makeDirectory($directoryPath . '/Widgets');
+        $this->copyStubToApp('config', $configPath, [
+            'namespace' => (string) $contextNamespace,
+            'path' => (string) $context->replace('\\', '/'),
+        ]);
+    }
 
-        $this->info("Successfully created {$context}!");
+    protected function createDirectories($context)
+    {
+        $directoryPath = app_path(
+            (string) $context
+                ->replace('\\', '/')
+        );
 
-        return static::SUCCESS;
+        app(Filesystem::class)->makeDirectory($directoryPath, force: $this->option('force'));
+        app(Filesystem::class)->makeDirectory($directoryPath.'/Pages', force: $this->option('force'));
+        app(Filesystem::class)->makeDirectory($directoryPath.'/Resources', force: $this->option('force'));
+        app(Filesystem::class)->makeDirectory($directoryPath.'/Widgets', force: $this->option('force'));
     }
 
     protected function copyStubToApp(string $stub, string $targetPath, array $replacements = []): void
@@ -63,7 +101,7 @@ class MakeContextCommand extends Command
         $filesystem = app(Filesystem::class);
 
         if (! $this->fileExists($stubPath = base_path("stubs/filament/{$stub}.stub"))) {
-            $stubPath = __DIR__ . "/../../stubs/{$stub}.stub";
+            $stubPath = __DIR__."/../../stubs/{$stub}.stub";
         }
 
         $stub = Str::of($filesystem->get($stubPath));

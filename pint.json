@@ -1,0 +1,8 @@
+{
+    "exclude": [
+        "build"
+    ],
+    "rules": {
+        "concat_space": false
+    }
+}
