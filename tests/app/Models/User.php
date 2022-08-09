@@ -55,4 +55,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return UserFactory::new();
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

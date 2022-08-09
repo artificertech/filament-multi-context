@@ -2,6 +2,7 @@
 
 use Artificertech\FilamentMultiContext\Tests\App\Filament\Pages\Dashboard;
 use Artificertech\FilamentMultiContext\Tests\App\Filament\Resources\UserResource;
+use Artificertech\FilamentMultiContext\Tests\App\Filament\Resources\UserResource\RelationManagers\PostsRelationManager;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
 use Filament\Facades\Filament;
 use function Pest\Laravel\actingAs;
@@ -31,4 +32,12 @@ it('registers filament resources', function () {
 
     get(route('filament.resources.users.index'))
         ->assertSuccessful();
+});
+
+it('registers filament relation managers', function () {
+    actingAs($user = User::factory()->hasPosts(3)->create());
+
+    get(route('filament.resources.users.edit', ['record' => $user]))
+        ->assertSuccessful()
+        ->assertSeeLivewire(PostsRelationManager::class);
 });

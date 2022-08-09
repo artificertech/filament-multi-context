@@ -3,6 +3,7 @@
 namespace Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources;
 
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource\Pages;
+use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource\RelationManagers\PostsRelationManager;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -45,7 +46,16 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageUsers::route('/'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            PostsRelationManager::class,
         ];
     }
 }
