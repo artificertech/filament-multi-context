@@ -19,7 +19,7 @@ use Livewire\Component;
 use ReflectionClass;
 use Symfony\Component\Finder\SplFileInfo;
 
-class ContextServiceProvider extends PluginServiceProvider
+abstract class ContextServiceProvider extends PluginServiceProvider
 {
     public function packageRegistered(): void
     {
@@ -49,8 +49,8 @@ class ContextServiceProvider extends PluginServiceProvider
     {
         if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
             Route::domain($this->contextConfig('domain'))
-                ->middleware(array_merge([ApplyContext::class . ':' . static::$name], $this->contextConfig('middleware.base')))
-                ->name(static::$name . '.')
+                ->middleware(array_merge([ApplyContext::class.':'.static::$name], $this->contextConfig('middleware.base')))
+                ->name(static::$name.'.')
                 ->group(function () {
                     Route::prefix($this->contextConfig('path'))->group(function () {
                         Route::middleware($this->contextConfig('middleware.auth'))->group($this->componentRoutes());
@@ -127,7 +127,7 @@ class ContextServiceProvider extends PluginServiceProvider
                 continue;
             }
 
-            $filePath = Str::of($directory . '/' . $file->getRelativePathname());
+            $filePath = Str::of($directory.'/'.$file->getRelativePathname());
 
             if ($filePath->startsWith($this->contextConfig('resources.path')) && is_subclass_of($fileClass, Resource::class)) {
                 $this->resources[] = $fileClass;
@@ -156,9 +156,9 @@ class ContextServiceProvider extends PluginServiceProvider
             }
 
             $livewireAlias = Str::of($fileClass)
-                ->after($namespace . '\\')
+                ->after($namespace.'\\')
                 ->replace(['/', '\\'], '.')
-                ->prepend(static::$name . '.')
+                ->prepend(static::$name.'.')
                 ->explode('.')
                 ->map([Str::class, 'kebab'])
                 ->implode('.');

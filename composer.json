@@ -4,6 +4,7 @@
     "keywords": [
         "artificertech",
         "laravel",
+        "filament",
         "filament-multi-context"
     ],
     "homepage": "https://github.com/artificertech/filament-multi-context",
@@ -22,6 +23,7 @@
         "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
+        "laravel/pint": "^1.1",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.0.1",
         "orchestra/testbench": "^7.0",
@@ -48,7 +50,8 @@
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage"
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
     },
     "config": {
         "sort-packages": true,

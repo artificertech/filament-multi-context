@@ -103,7 +103,7 @@ return [
 
     'pages' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\Filament\\Pages',
-        'path' => __DIR__ . '/../app/Filament/Pages',
+        'path' => __DIR__.'/../app/Filament/Pages',
         'register' => [],
     ],
 
@@ -119,7 +119,7 @@ return [
 
     'resources' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\Filament\\Resources',
-        'path' => __DIR__ . '/../app/Filament/Resources',
+        'path' => __DIR__.'/../app/Filament/Resources',
         'register' => [],
     ],
 
@@ -135,7 +135,7 @@ return [
 
     'widgets' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\Filament\\Widgets',
-        'path' => __DIR__ . '/../app/Filament/Widgets',
+        'path' => __DIR__.'/../app/Filament/Widgets',
         'register' => [
             Widgets\AccountWidget::class,
             Widgets\FilamentInfoWidget::class,
@@ -154,7 +154,7 @@ return [
 
     'livewire' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\Filament',
-        'path' => __DIR__ . '/../app/Filament',
+        'path' => __DIR__.'/../app/Filament',
     ],
 
     /*

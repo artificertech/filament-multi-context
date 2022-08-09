@@ -4,7 +4,6 @@ use Artificertech\FilamentMultiContext\Tests\App\Filament\Pages\Dashboard;
 use Artificertech\FilamentMultiContext\Tests\App\Filament\Resources\UserResource;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
 use Filament\Facades\Filament;
-
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 

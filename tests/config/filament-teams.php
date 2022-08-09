@@ -51,7 +51,7 @@ return [
 
     'pages' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\FilamentTeams\\Pages',
-        'path' => __DIR__ . '/../app/FilamentTeams/Pages',
+        'path' => __DIR__.'/../app/FilamentTeams/Pages',
         'register' => [],
     ],
 
@@ -67,7 +67,7 @@ return [
 
     'resources' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\FilamentTeams\\Resources',
-        'path' => __DIR__ . '/../app/FilamentTeams/Resources',
+        'path' => __DIR__.'/../app/FilamentTeams/Resources',
         'register' => [],
     ],
 
@@ -83,7 +83,7 @@ return [
 
     'widgets' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\FilamentTeams\\Widgets',
-        'path' => __DIR__ . '/../app/FilamentTeams/Widgets',
+        'path' => __DIR__.'/../app/FilamentTeams/Widgets',
         'register' => [
             Widgets\AccountWidget::class,
             Widgets\FilamentInfoWidget::class,
@@ -102,7 +102,7 @@ return [
 
     'livewire' => [
         'namespace' => 'Artificertech\\FilamentMultiContext\\Tests\\App\\FilamentTeams',
-        'path' => __DIR__ . '/../app/FilamentTeams',
+        'path' => __DIR__.'/../app/FilamentTeams',
     ],
 
     /*

@@ -27,8 +27,6 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            FilamentMultiContextServiceProvider::class,
-
             BladeHeroiconsServiceProvider::class,
             BladeIconsServiceProvider::class,
             FilamentServiceProvider::class,
@@ -38,6 +36,7 @@ class TestCase extends Orchestra
             SupportServiceProvider::class,
             TablesServiceProvider::class,
 
+            FilamentMultiContextServiceProvider::class,
             FilamentTeamsServiceProvider::class,
         ];
     }

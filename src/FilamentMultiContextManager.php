@@ -59,7 +59,6 @@ class FilamentMultiContextManager
             Filament::setContext();
         }
 
-
         return $this;
     }
 

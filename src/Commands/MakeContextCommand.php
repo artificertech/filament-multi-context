@@ -91,9 +91,9 @@ class MakeContextCommand extends Command
         );
 
         app(Filesystem::class)->makeDirectory($directoryPath, force: $this->option('force'));
-        app(Filesystem::class)->makeDirectory($directoryPath . '/Pages', force: $this->option('force'));
-        app(Filesystem::class)->makeDirectory($directoryPath . '/Resources', force: $this->option('force'));
-        app(Filesystem::class)->makeDirectory($directoryPath . '/Widgets', force: $this->option('force'));
+        app(Filesystem::class)->makeDirectory($directoryPath.'/Pages', force: $this->option('force'));
+        app(Filesystem::class)->makeDirectory($directoryPath.'/Resources', force: $this->option('force'));
+        app(Filesystem::class)->makeDirectory($directoryPath.'/Widgets', force: $this->option('force'));
     }
 
     protected function copyStubToApp(string $stub, string $targetPath, array $replacements = []): void
@@ -101,7 +101,7 @@ class MakeContextCommand extends Command
         $filesystem = app(Filesystem::class);
 
         if (! $this->fileExists($stubPath = base_path("stubs/filament/{$stub}.stub"))) {
-            $stubPath = __DIR__ . "/../../stubs/{$stub}.stub";
+            $stubPath = __DIR__."/../../stubs/{$stub}.stub";
         }
 
         $stub = Str::of($filesystem->get($stubPath));
