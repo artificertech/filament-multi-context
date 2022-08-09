@@ -60,13 +60,13 @@ class MakeContextCommand extends Command
             ->prepend('\\\\')
             ->prepend('App');
 
-        if (!$this->option('force') && $this->checkForCollision([
+        if (! $this->option('force') && $this->checkForCollision([
             $serviceProviderPath,
         ])) {
             return static::INVALID;
         }
 
-        if (!$this->option('force') && $this->checkForCollision([
+        if (! $this->option('force') && $this->checkForCollision([
             $configPath,
         ])) {
             return static::INVALID;
@@ -79,7 +79,7 @@ class MakeContextCommand extends Command
 
         $this->copyStubToApp('config', $configPath, [
             'namespace' => (string) $contextNamespace,
-            'path' => (string) $context->replace('\\', '/')
+            'path' => (string) $context->replace('\\', '/'),
         ]);
     }
 
@@ -100,7 +100,7 @@ class MakeContextCommand extends Command
     {
         $filesystem = app(Filesystem::class);
 
-        if (!$this->fileExists($stubPath = base_path("stubs/filament/{$stub}.stub"))) {
+        if (! $this->fileExists($stubPath = base_path("stubs/filament/{$stub}.stub"))) {
             $stubPath = __DIR__ . "/../../stubs/{$stub}.stub";
         }
 

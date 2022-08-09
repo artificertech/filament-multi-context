@@ -33,7 +33,7 @@ class FilamentMultiContextManager
 
     public function addContext(string $name)
     {
-        $this->contexts[$name] = new FilamentManager;
+        $this->contexts[$name] = new FilamentManager();
 
         return $this;
     }

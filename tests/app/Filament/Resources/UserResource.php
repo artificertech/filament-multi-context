@@ -3,15 +3,11 @@
 namespace Artificertech\FilamentMultiContext\Tests\App\Filament\Resources;
 
 use Artificertech\FilamentMultiContext\Tests\App\Filament\Resources\UserResource\Pages;
-use Artificertech\FilamentMultiContext\Tests\App\Filament\Resources\UserResource\RelationManagers;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
-use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {

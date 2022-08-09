@@ -4,7 +4,6 @@ use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Pages\Dashboard;
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
 use Filament\Facades\Filament;
-use Illuminate\Support\Facades\Hash;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;

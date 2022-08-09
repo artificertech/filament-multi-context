@@ -47,8 +47,7 @@ class ContextServiceProvider extends PluginServiceProvider
 
     protected function bootRoutes()
     {
-        if (!($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
-
+        if (! ($this->app instanceof CachesRoutes && $this->app->routesAreCached())) {
             Route::domain($this->contextConfig('domain'))
                 ->middleware(array_merge([ApplyContext::class . ':' . static::$name], $this->contextConfig('middleware.base')))
                 ->name(static::$name . '.')
@@ -116,7 +115,7 @@ class ContextServiceProvider extends PluginServiceProvider
 
         $filesystem = app(Filesystem::class);
 
-        if (!$filesystem->isDirectory($directory)) {
+        if (! $filesystem->isDirectory($directory)) {
             return;
         }
         foreach ($filesystem->allFiles($directory) as $file) {
@@ -152,7 +151,7 @@ class ContextServiceProvider extends PluginServiceProvider
                 continue;
             }
 
-            if (!is_subclass_of($fileClass, Component::class)) {
+            if (! is_subclass_of($fileClass, Component::class)) {
                 continue;
             }
 
@@ -180,7 +179,7 @@ class ContextServiceProvider extends PluginServiceProvider
 
         $filesystem = app(Filesystem::class);
 
-        if (!$filesystem->exists($directory)) {
+        if (! $filesystem->exists($directory)) {
             return;
         }
 
@@ -192,7 +191,7 @@ class ContextServiceProvider extends PluginServiceProvider
                         ->append('\\', $file->getRelativePathname())
                         ->replace(['/', '.php'], ['\\', '']);
                 })
-                ->filter(fn (string $class): bool => is_subclass_of($class, $baseClass) && (!(new ReflectionClass($class))->isAbstract()))
+                ->filter(fn (string $class): bool => is_subclass_of($class, $baseClass) && (! (new ReflectionClass($class))->isAbstract()))
                 ->all(),
         );
     }
