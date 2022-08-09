@@ -26,9 +26,19 @@ class FilamentMultiContextManager
         return $this;
     }
 
+    public function currentContext(): string
+    {
+        return $this->currentContext ?? 'filament';
+    }
+
     public function getContext()
     {
         return $this->contexts[$this->currentContext ?? 'filament'];
+    }
+
+    public function getContexts(): array
+    {
+        return $this->contexts;
     }
 
     public function addContext(string $name)
@@ -40,24 +50,28 @@ class FilamentMultiContextManager
 
     public function forContext(string $context, callable $callback)
     {
+        $currentContext = Filament::currentContext();
+
         Filament::setContext($context);
 
         $callback();
 
-        Filament::setContext();
+        Filament::setContext($currentContext);
 
         return $this;
     }
 
     public function forAllContexts(callable $callback)
     {
+        $currentContext = Filament::currentContext();
+
         foreach ($this->contexts as $key => $context) {
             Filament::setContext($context);
 
             $callback();
-
-            Filament::setContext();
         }
+
+        Filament::setContext($currentContext);
 
         return $this;
     }
