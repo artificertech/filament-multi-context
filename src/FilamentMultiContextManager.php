@@ -66,7 +66,7 @@ class FilamentMultiContextManager
         $currentContext = Filament::currentContext();
 
         foreach ($this->contexts as $key => $context) {
-            Filament::setContext($context);
+            Filament::setContext($key);
 
             $callback();
         }
