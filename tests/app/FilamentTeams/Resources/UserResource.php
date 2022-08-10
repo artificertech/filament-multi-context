@@ -2,6 +2,7 @@
 
 namespace Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources;
 
+use Artificertech\FilamentMultiContext\Concerns\ContextualResource;
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource\Pages;
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource\RelationManagers\PostsRelationManager;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
@@ -12,9 +13,13 @@ use Filament\Tables;
 
 class UserResource extends Resource
 {
+    use ContextualResource;
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+
+    protected static ?string $slug = 'teams-users';
 
     public static function form(Form $form): Form
     {

@@ -26,14 +26,14 @@ it('registers filament-teams resources', function () {
 
     actingAs(User::factory()->create());
 
-    get(route('filament-teams.resources.users.index'))
+    get(route('filament-teams.resources.teams-users.index'))
         ->assertSuccessful();
 });
 
 it('registers filament-teams relation managers', function () {
     actingAs($user = User::factory()->hasPosts(3)->create());
 
-    get(route('filament-teams.resources.users.edit', ['record' => $user]))
+    get(route('filament-teams.resources.teams-users.edit', ['record' => $user]))
         ->assertSuccessful()
         ->assertSeeLivewire(PostsRelationManager::class);
 });
