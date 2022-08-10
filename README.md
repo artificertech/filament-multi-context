@@ -40,8 +40,43 @@ the default filament installation
 > **_Register Provider:_** Be sure to add the `FilamentTeamsServiceProvider`
 > class to your providers array in `config/app.php`
 
-You may now add filament resources in your FilamentTeams directories and they
-will be registered under the `filament-teams` context
+You may now add filament resources in your FilamentTeams directories be sure to
+add the ContextualPage and ContextualResource traits to their associated classes
+inside of your context directories. (I tried really hard with v2 to make this
+unnecessary but sadly here we are). Without this when filament generates
+navigation links will try to use `filament.pages.*` and
+`filament.resources.{resource}.*` instead of `{context}.pages.*` and
+`{context}.resources.{resource}.*` as the route names
+
+### ContextualPage & ContextualResource traits
+
+Resources:
+
+```php
+namespace App\FilamentTeams\Resources;
+
+use Artificertech\FilamentMultiContext\Concerns\ContextualPage;
+use Filament\Pages\Page;
+
+class Dashboard extends Page
+{
+    use ContextualPage;
+}
+```
+
+Resources:
+
+```php
+namespace App\FilamentTeams\Resources;
+
+use Artificertech\FilamentMultiContext\Concerns\ContextualResource;
+use Filament\Resources\Resource;
+
+class UserResource extends Resource
+{
+    use ContextualResource;
+}
+```
 
 ## Configuration
 
