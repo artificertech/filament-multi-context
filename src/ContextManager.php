@@ -6,6 +6,7 @@ use Closure;
 use Filament\AvatarProviders\Contracts\AvatarProvider;
 use Filament\FilamentManager;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
@@ -147,7 +148,7 @@ abstract class ContextManager extends FilamentManager
         return static::getAuth() ?? auth()->guard(config('filament.auth.guard'));
     }
 
-    public function getUserAvatarUrl(Model $user): string
+    public function getUserAvatarUrl(Model|Authenticable $user): string
     {
         $avatar = null;
 
