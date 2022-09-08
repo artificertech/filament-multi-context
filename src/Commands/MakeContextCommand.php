@@ -90,7 +90,7 @@ class MakeContextCommand extends Command
                 ->replace('\\', '/')
         );
 
-        app(Filesystem::class)->makeDirectory($directoryPath, force: $this->option('force'));
+        app(Filesystem::class)->ensureDirectoryExists($directoryPath);
         app(Filesystem::class)->makeDirectory($directoryPath.'/Pages', force: $this->option('force'));
         app(Filesystem::class)->makeDirectory($directoryPath.'/Resources', force: $this->option('force'));
         app(Filesystem::class)->makeDirectory($directoryPath.'/Widgets', force: $this->option('force'));
