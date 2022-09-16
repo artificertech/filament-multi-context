@@ -134,7 +134,7 @@ protected function componentRoutes(): callable
 
 ## !!! The Filament Facade
 
-In order for this package to work the `filament` app service has been overriden.
+In order for this package to work the `filament` app service has been overwritten.
 Each context is represented by its own `Filament\FilamentManager` object. Within
 your application calls to the filament facade (such as `Filament::serving`) will
 be proxied to the appropriate `Filament\FilamentManager` object based on the
