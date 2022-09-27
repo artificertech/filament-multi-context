@@ -53,7 +53,7 @@ class MakeContextCommand extends Command
             ->prepend(app_path('Providers'))
             ->append('.php');
 
-        $configPath = config_path($contextName->append('.php'));
+        $configPath = config_path($contextName->prepend('/')->append('.php'));
 
         $contextNamespace = $context
             ->replace('\\', '\\\\')
