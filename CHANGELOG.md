@@ -2,6 +2,19 @@
 
 All notable changes to `filament-multi-context` will be documented in this file.
 
+## v2.0.1 - 2022-09-27
+
+### What's Changed
+
+- fix run-tests workflow by @coleshirley in https://github.com/artificertech/filament-multi-context/pull/21
+- Fix config file not being created for windows filesystems by @iotronlab in https://github.com/artificertech/filament-multi-context/pull/17
+
+### New Contributors
+
+- @iotronlab made their first contribution in https://github.com/artificertech/filament-multi-context/pull/17
+
+**Full Changelog**: https://github.com/artificertech/filament-multi-context/compare/V2.0.0...v2.0.1
+
 ## V2.0.0 - 2022-09-06
 
 ### What's Changed
