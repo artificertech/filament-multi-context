@@ -16,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\Livewire;
 use ReflectionClass;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -81,6 +82,8 @@ abstract class ContextServiceProvider extends PluginServiceProvider
         parent::packageBooted();
 
         Filament::setContext();
+        
+        $this->bootLivewireComponents();
     }
 
     protected function registerComponents(): void
@@ -199,5 +202,12 @@ abstract class ContextServiceProvider extends PluginServiceProvider
     protected function contextConfig(string $key, string $default = null)
     {
         return Arr::get(config(static::$name), $key, $default);
+    }
+
+    protected function bootLivewireComponents(): void
+    {
+        foreach ($this->livewireComponents as $alias => $class) {
+            Livewire::component($alias, $class);
+        }
     }
 }
