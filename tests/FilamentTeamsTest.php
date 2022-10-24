@@ -38,7 +38,7 @@ it('registers filament-teams livewire component aliases', function () {
 
         expect($createUserAliases)->toContain('filament-teams.resources.user-resource.pages.create-user');
     });
-})->only();
+});
 
 it('registers filament-teams relation managers', function () {
     actingAs($user = User::factory()->hasPosts(3)->create());
