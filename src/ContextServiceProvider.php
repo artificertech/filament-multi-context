@@ -22,6 +22,8 @@ use Symfony\Component\Finder\SplFileInfo;
 
 abstract class ContextServiceProvider extends PluginServiceProvider
 {
+    protected array $livewireComponents = [];
+
     public function packageRegistered(): void
     {
         $this->app->booting(function () {
@@ -82,7 +84,7 @@ abstract class ContextServiceProvider extends PluginServiceProvider
         parent::packageBooted();
 
         Filament::setContext();
-        
+
         $this->bootLivewireComponents();
     }
 

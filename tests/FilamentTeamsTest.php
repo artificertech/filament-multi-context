@@ -7,7 +7,6 @@ use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserRes
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
 use Filament\Facades\Filament;
 use Livewire\Livewire;
-
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
