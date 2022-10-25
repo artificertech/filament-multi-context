@@ -34,6 +34,14 @@ abstract class ContextServiceProvider extends PluginServiceProvider
                 Facades\Filament::registerPages($this->getPages());
                 Facades\Filament::registerResources($this->getResources());
                 Facades\Filament::registerWidgets($this->getWidgets());
+
+                Facades\Filament::serving(function () {
+                    Facades\Filament::registerUserMenuItems($this->getUserMenuItems());
+                    Facades\Filament::registerScripts($this->getBeforeCoreScripts(), true);
+                    Facades\Filament::registerScripts($this->getScripts());
+                    Facades\Filament::registerStyles($this->getStyles());
+                    Facades\Filament::registerScriptData($this->getScriptData());
+                });
             });
         });
     }
