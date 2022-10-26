@@ -36,6 +36,10 @@ abstract class ContextServiceProvider extends PluginServiceProvider
                 Facades\Filament::registerWidgets($this->getWidgets());
 
                 Facades\Filament::serving(function () {
+                    if (Filament::currentContext() !== static::$name) {
+                        return;
+                    }
+
                     Facades\Filament::registerUserMenuItems($this->getUserMenuItems());
                     Facades\Filament::registerScripts($this->getBeforeCoreScripts(), true);
                     Facades\Filament::registerScripts($this->getScripts());
