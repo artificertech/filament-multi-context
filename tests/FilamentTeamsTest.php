@@ -37,3 +37,27 @@ it('registers filament-teams relation managers', function () {
         ->assertSuccessful()
         ->assertSeeLivewire(PostsRelationManager::class);
 });
+
+it('returns filament guard if none is defined', function () {
+    $guardName = config('filament.auth.guard');
+
+    Filament::setContext('filament-teams');
+
+    $reflectionClass = new ReflectionClass($guard = Filament::auth());
+
+    expect($reflectionClass->getProperty('name')->getValue($guard))->toBe($guardName);
+});
+
+it('returns guard if one is defined', function () {
+    $this->app['config']->set('auth.guards.web2', [
+        'driver' => 'session',
+        'provider' => 'users',
+    ]);
+    $this->app['config']->set('filament-teams.auth.guard', 'web2');
+
+    Filament::setContext('filament-teams');
+
+    $reflectionClass = new ReflectionClass($guard = Filament::auth());
+
+    expect($reflectionClass->getProperty('name')->getValue($guard))->toBe('web2');
+});

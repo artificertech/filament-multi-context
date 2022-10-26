@@ -4,6 +4,7 @@ namespace Artificertech\FilamentMultiContext;
 
 use Filament\Facades\Filament;
 use Filament\FilamentManager;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 class FilamentMultiContextManager
@@ -74,6 +75,13 @@ class FilamentMultiContextManager
         Filament::setContext($currentContext);
 
         return $this;
+    }
+
+    public function auth(): Guard
+    {
+        $context = $this->currentContext();
+
+        return auth()->guard(config("{$context}.auth.guard", config('filament.auth.guard')));
     }
 
     /**
