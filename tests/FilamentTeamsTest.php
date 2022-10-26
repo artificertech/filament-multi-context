@@ -2,9 +2,11 @@
 
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Pages\Dashboard;
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource;
+use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource\Pages\CreateUser;
 use Artificertech\FilamentMultiContext\Tests\App\FilamentTeams\Resources\UserResource\RelationManagers\PostsRelationManager;
 use Artificertech\FilamentMultiContext\Tests\App\Models\User;
 use Filament\Facades\Filament;
+use Livewire\Livewire;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
@@ -28,6 +30,14 @@ it('registers filament-teams resources', function () {
 
     get(route('filament-teams.resources.teams-users.index'))
         ->assertSuccessful();
+});
+
+it('registers filament-teams livewire component aliases', function () {
+    Filament::forContext('filament-teams', function () {
+        $createUserAliases = array_keys(Livewire::getComponentAliases(), CreateUser::class);
+
+        expect($createUserAliases)->toContain('filament-teams.resources.user-resource.pages.create-user');
+    });
 });
 
 it('registers filament-teams relation managers', function () {
