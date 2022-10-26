@@ -44,8 +44,9 @@ it('returns filament guard if none is defined', function () {
     Filament::setContext('filament-teams');
 
     $reflectionClass = new ReflectionClass($guard = Filament::auth());
-
-    expect($reflectionClass->getProperty('name')->getValue($guard))->toBe($guardName);
+    $property = $reflectionClass->getProperty('name');
+    $property->setAccessible(true);
+    expect($property->getValue($guard))->toBe($guardName);
 });
 
 it('returns guard if one is defined', function () {
@@ -58,6 +59,7 @@ it('returns guard if one is defined', function () {
     Filament::setContext('filament-teams');
 
     $reflectionClass = new ReflectionClass($guard = Filament::auth());
-
-    expect($reflectionClass->getProperty('name')->getValue($guard))->toBe('web2');
+    $property = $reflectionClass->getProperty('name');
+    $property->setAccessible(true);
+    expect($property->getValue($guard))->toBe('web2');
 });

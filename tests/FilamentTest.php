@@ -46,6 +46,7 @@ it('returns filament configured guard', function () {
     $guardName = config('filament.auth.guard');
 
     $reflectionClass = new ReflectionClass($guard = Filament::auth());
-
-    expect($reflectionClass->getProperty('name')->getValue($guard))->toBe($guardName);
+    $property = $reflectionClass->getProperty('name');
+    $property->setAccessible(true);
+    expect($property->getValue($guard))->toBe($guardName);
 });
