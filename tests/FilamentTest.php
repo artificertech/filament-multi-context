@@ -41,3 +41,12 @@ it('registers filament relation managers', function () {
         ->assertSuccessful()
         ->assertSeeLivewire(PostsRelationManager::class);
 });
+
+it('returns filament configured guard', function () {
+    $guardName = config('filament.auth.guard');
+
+    $reflectionClass = new ReflectionClass($guard = Filament::auth());
+    $property = $reflectionClass->getProperty('name');
+    $property->setAccessible(true);
+    expect($property->getValue($guard))->toBe($guardName);
+});

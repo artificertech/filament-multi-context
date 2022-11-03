@@ -42,13 +42,12 @@ the default filament installation
 
 You may now add filament resources in your FilamentTeams directories.
 
-> **_Context Traits:_** be sure to
-add the ContextualPage and ContextualResource traits to their associated classes
-inside of your context directories. (I tried really hard with v2 to make this
-unnecessary but sadly here we are). Without this when filament generates
-navigation links it will try to use `filament.pages.*` and
-`filament.resources.{resource}.*` instead of `{context}.pages.*` and
-`{context}.resources.{resource}.*` as the route names
+> **_Context Traits:_** be sure to add the ContextualPage and ContextualResource
+> traits to their associated classes inside of your context directories. (I
+> tried really hard with v2 to make this unnecessary but sadly here we are).
+> Without this when filament generates navigation links it will try to use
+> `filament.pages.*` and `filament.resources.{resource}.*` instead of
+> `{context}.pages.*` and `{context}.resources.{resource}.*` as the route names
 
 ### ContextualPage & ContextualResource traits
 
@@ -131,6 +130,28 @@ protected function componentRoutes(): callable
             });
         };
     }
+```
+
+### Changing the context guard
+
+By default all contexts will use the guard defined in the primary `filament.php`
+config file. However if you need to specify the guard for a specific context you
+may add the following lines to your context config file:
+
+```php
+/*
+    |--------------------------------------------------------------------------
+    | Auth
+    |--------------------------------------------------------------------------
+    |
+    | This is the configuration that Filament will use to handle authentication
+    | into the admin panel.
+    |
+    */
+
+    'auth' => [
+        'guard' => 'my-custom-guard',
+    ],
 ```
 
 ## !!! The Filament Facade
