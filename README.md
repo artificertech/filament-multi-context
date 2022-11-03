@@ -105,7 +105,8 @@ are:
 Your `ContextServiceProvider` found in your
 `app/Providers/FilamentTeamsServiceProvider.php` is an extension of the Filament
 `PluginServiceProvder` so features of the `PluginServiceProvider` may be used
-for your context
+for your context. Any UserMenuItems, scripts, styles, or scriptData added to
+the provider will be registered for that context only
 
 ### Custom Page and Resource Routing
 
@@ -166,7 +167,7 @@ Filament::getContexts()
 ```
 
 ```php
-// set the current app context. 
+// set the current app context.
 // Passing null or nothing sets the context to 'filament'
 
 Filament::setContext(string|null $context)
@@ -180,8 +181,8 @@ Filament::forContext(string $context, function () {
 ```
 
 ```php
-// loops through each registered context (including the default 'filament' context), 
-// sets that context as the current context, 
+// loops through each registered context (including the default 'filament' context),
+// sets that context as the current context,
 // runs the callback, then resets to the original value
 Filament::forAllContexts(function () {
     // ...
