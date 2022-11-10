@@ -54,7 +54,7 @@ You may now add filament resources in your FilamentTeams directories.
 Resources:
 
 ```php
-namespace App\FilamentTeams\Resources;
+namespace App\FilamentTeams\Pages;
 
 use Artificertech\FilamentMultiContext\Concerns\ContextualPage;
 use Filament\Pages\Page;
