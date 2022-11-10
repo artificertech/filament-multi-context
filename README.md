@@ -51,7 +51,7 @@ You may now add filament resources in your FilamentTeams directories.
 
 ### ContextualPage & ContextualResource traits
 
-Resources:
+Pages:
 
 ```php
 namespace App\FilamentTeams\Pages;
