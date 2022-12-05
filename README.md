@@ -37,9 +37,10 @@ config/filament-teams.php
 `Filament` cannot be passed as a context to this command as it is reserved for
 the default filament installation
 
-> **_Register Provider:_** Be sure to add the `FilamentTeamsServiceProvider`
-> class to your providers array in `config/app.php`
+### **_Register Provider:_** 
+Be sure to add the `FilamentTeamsServiceProvider` class to your providers array in `config/app.php`
 
+### Adding Resources and Pages
 You may now add filament resources in your FilamentTeams directories.
 
 > **_Context Traits:_** be sure to add the ContextualPage and ContextualResource
@@ -49,7 +50,7 @@ You may now add filament resources in your FilamentTeams directories.
 > `filament.pages.*` and `filament.resources.{resource}.*` instead of
 > `{context}.pages.*` and `{context}.resources.{resource}.*` as the route names
 
-### ContextualPage & ContextualResource traits
+#### ContextualPage & ContextualResource traits
 
 Pages:
 
