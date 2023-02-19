@@ -48,6 +48,13 @@ it('registers filament-teams relation managers', function () {
         ->assertSeeLivewire(PostsRelationManager::class);
 });
 
+it('registers filament-teams render hooks', function () {
+    Filament::forContext('filament-teams', function () {
+        event(new \Filament\Events\ServingFilament());
+        expect(Filament::renderHook('test'))->toHtml()->toBe('something');
+    });
+});
+
 it('returns filament guard if none is defined', function () {
     $guardName = config('filament.auth.guard');
 
