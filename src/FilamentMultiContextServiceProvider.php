@@ -3,6 +3,10 @@
 namespace Artificertech\FilamentMultiContext;
 
 use Artificertech\FilamentMultiContext\Commands\MakeContextCommand;
+use Artificertech\FilamentMultiContext\Commands\MakePageCommand;
+use Artificertech\FilamentMultiContext\Commands\MakeRelationManagerCommand;
+use Artificertech\FilamentMultiContext\Commands\MakeResourceCommand;
+use Artificertech\FilamentMultiContext\Commands\MakeWidgetCommand;
 use Artificertech\FilamentMultiContext\Http\Middleware\ApplyContext;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -24,8 +28,21 @@ class FilamentMultiContextServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->extend('filament', function ($service, $app) {
+        $this->app->extend('filament', static function ($service) {
             return new FilamentMultiContextManager($service);
+        });
+
+        $this->app->extend(\Filament\Commands\MakeResourceCommand::class, static function () {
+            return new MakeResourceCommand();
+        });
+        $this->app->extend(\Filament\Commands\MakePageCommand::class, static function () {
+            return new MakePageCommand();
+        });
+        $this->app->extend(\Filament\Commands\MakeRelationManagerCommand::class, static function () {
+            return new MakeRelationManagerCommand();
+        });
+        $this->app->extend(\Filament\Commands\MakeWidgetCommand::class, static function () {
+            return new MakeWidgetCommand();
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace Artificertech\FilamentMultiContext\Commands;
 
-use Filament\Commands\Concerns;
+use Filament\Support\Commands\Concerns;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
