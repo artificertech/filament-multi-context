@@ -2,6 +2,23 @@
 
 All notable changes to `filament-multi-context` will be documented in this file.
 
+## v2.1.1 - 2023-03-02
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.3.4 to 1.3.5 by @dependabot in https://github.com/artificertech/filament-multi-context/pull/29
+- Update README.md by @weeg in https://github.com/artificertech/filament-multi-context/pull/30
+- Bump dependabot/fetch-metadata from 1.3.5 to 1.3.6 by @dependabot in https://github.com/artificertech/filament-multi-context/pull/33
+- bump composer deps for laravel 10 support by @josefbehr in https://github.com/artificertech/filament-multi-context/pull/35
+- Bump aglipanci/laravel-pint-action from 1.0.0 to 2.1.0 by @dependabot in https://github.com/artificertech/filament-multi-context/pull/31
+
+### New Contributors
+
+- @weeg made their first contribution in https://github.com/artificertech/filament-multi-context/pull/30
+- @josefbehr made their first contribution in https://github.com/artificertech/filament-multi-context/pull/35
+
+**Full Changelog**: https://github.com/artificertech/filament-multi-context/compare/v2.1.0...v2.1.1
+
 ## v2.1.0 - 2022-11-03
 
 ### What's Changed
