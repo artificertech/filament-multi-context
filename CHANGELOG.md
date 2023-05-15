@@ -2,6 +2,16 @@
 
 All notable changes to `filament-multi-context` will be documented in this file.
 
+## V2.1.2 - 2023-05-15
+
+### What's Changed
+
+- Bump aglipanci/laravel-pint-action from 2.1.0 to 2.2.0 by @dependabot in https://github.com/artificertech/filament-multi-context/pull/38
+- Bump dependabot/fetch-metadata from 1.3.6 to 1.4.0 by @dependabot in https://github.com/artificertech/filament-multi-context/pull/40
+- 📌 Loosen up Filament version constraint by @juliomotol in https://github.com/artificertech/filament-multi-context/pull/42
+
+**Full Changelog**: https://github.com/artificertech/filament-multi-context/compare/v2.1.1...V2.1.2
+
 ## v2.1.1 - 2023-03-02
 
 ### What's Changed
