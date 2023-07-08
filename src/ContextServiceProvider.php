@@ -24,6 +24,8 @@ abstract class ContextServiceProvider extends PluginServiceProvider
 {
     protected array $livewireComponents = [];
 
+    protected array $renderHooks = [];
+
     public function packageRegistered(): void
     {
         $this->app->booting(function () {
@@ -48,6 +50,10 @@ abstract class ContextServiceProvider extends PluginServiceProvider
                     Facades\Filament::registerScripts($this->getScripts());
                     Facades\Filament::registerStyles($this->getStyles());
                     Facades\Filament::registerScriptData($this->getScriptData());
+
+                    foreach ($this->getRenderHooks() as $name => $callback) {
+                        Facades\Filament::registerRenderHook($name, $callback);
+                    }
                 });
             });
         });
@@ -223,5 +229,10 @@ abstract class ContextServiceProvider extends PluginServiceProvider
         foreach ($this->livewireComponents as $alias => $class) {
             Livewire::component($alias, $class);
         }
+    }
+
+    protected function getRenderHooks(): array
+    {
+        return $this->renderHooks;
     }
 }
